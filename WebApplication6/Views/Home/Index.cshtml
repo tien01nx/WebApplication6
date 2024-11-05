@@ -1,8 +1,452 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿
+<div class="card card-custom gutter-b mt-1 ">
+    <div class="card-body">
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+        <div class="row mt-2 pe-0 me-0">
+
+            <div class="col-12 mb-2 row pe-0 m-0">
+                <div class="pagetitle col-sm-8 col-12 m-0">
+                    <h1 class="fs-2">QC</h1>
+                </div>
+                <div class="col-sm-4 col-12 d-flex justify-content-end pe-0">
+                    <a href="/Material/ExportExcel" class="btn btn-primary mb-1 me-2" id="ExportExcel">
+                        <i class="bi bi-arrow-up-right-square"></i> Export
+                    </a>
+                    <button type="button" class="btn btn-success mb-1" id="AddNew" onclick="return showModal();">
+                        <i class="bi bi-plus-circle"></i> Thêm mới
+                    </button>
+                </div>
+                @* <div class="col-sm-4 col-12 d-flex justify-content-end pe-0">
+                <a href="/Material/ExportExcel" class="btn btn-primary mb-1" id="ExportExcel"><i class="bi bi-arrow-up-right-square"></i> Export</a>
+                </div> *@
+
+            </div>
+        </div>
+        @* <div class="col-sm-4 col-12 d-flex justify-content-end pe-0">
+        <a href="/Material/ExportExcel" class="btn btn-success mb-1" id="ExportExcel"><i class="bi bi-plus"></i> Tạo mới</a>
+        </div> *@
+
+        <table id="productTable" class="table table-bordered border-primary font-custom">
+            <thead>
+                <tr class="text-center align-middle">
+                    <th class="table-color" scope="col">Id</th>
+                    <th class="table-color" scope="col">Name</th>
+                    <th class="table-color" scope="col">Quantity</th>
+                    <th class="table-color" scope="col" style="width: 7%;">Đơn vị</th>
+
+                    @* <th class="table-color" scope="col" style="width: 7%;">Tồn kho</th>
+                    <th class="table-color" scope="col" style="width: 7%;">Số lượng tối thiểu</th>
+                    <th class="table-color" scope="col">Ghi chú</th> *@
+                </tr>
+            </thead>
+            <tbody id="tbody">
+            </tbody>
+        </table>
+
+    </div>
 </div>
+
+@* <table id="productTable" class="table table-striped table-bordered table-hover bg-primary" style="width:100%">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+ *@
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header modal-color pt-2 pb-2">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="CloseModal()"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3" id="form">
+
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <select class="form-select" id="groupIdModal" aria-label="Nhóm nguyên vật liệu">
+                            </select>
+                            <label for="groupIdModal"><span style="color: red">*</span>Nhóm nguyên vật liệu</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <select class="form-select" id="importedMaterial" aria-label="Nguyên liệu nhập gia công">
+                            </select>
+                            <label for="importedMaterial"><span style="color: red">*</span>Nguyên liệu nhập gia công</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control " id="formMaterialCode" placeholder="Mã nguyên vật liệu" required>
+                            <label for="formMaterialCode"><span style="color: red">*</span>Mã nguyên vật liệu</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control " id="formMaterialName" placeholder="Tên nguyên vật liệu" required>
+                            <label for="formMaterialName"><span style="color: red">*</span>Tên nguyên vật liệu</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="formCustomerMaterials" placeholder="Tên NVL của khách hàng">
+                            <label for="formCustomerMaterials">Tên NVL của khách hàng</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="formSupplierMaterials" placeholder="Tên NVL của NCC">
+                            <label for="formSupplierMaterials">Tên NVL của NCC</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="formImportPrice" placeholder="Giá nhập">
+                            <label for="formImportPrice">Giá nhập</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="formExportPrice" placeholder="Giá bán">
+                            <label for="formExportPrice">Giá bán</label>
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-md-12 d-flex justify-content-between">
+                        <div class="col-6 me-1">
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <select class="form-select" id="formUnit" aria-label="Đơn vị mua">
+                                        <option value="" disabled selected hidden>Chọn đơn vị</option>
+                                        <option value="Đôi">Đôi</option>
+                                        <option value="Cái">Cái</option>
+                                        <option value="Cặp">Cặp</option>
+                                        <option value="Kg">Kg</option>
+                                    </select>
+                                    <label for="formUnit"><span style="color: red">*</span>Đơn vị mua</label>
+                                </div>
+                            </div>
+                            <div class="col-12 mt-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="formMinQuantity" placeholder="Số lượng tối thiểu" style="min-height: 65px">
+                                    <label for="formMinQuantity">Số lượng tối thiểu</label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-6">
+                            <table class="table table-bordered border-primary">
+                                <tr>
+                                    <th class="table-color" scope="col" colspan="3">Quy đổi đơn vị trong sản xuất</th>
+                                </tr>
+                                <tr>
+                                    <th class="table-color" scope="col">STT</th>
+                                    <th class="table-color" scope="col">Đơn vị</th>
+                                    <th class="table-color" scope="col">Số lượng</th>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>
+                                        <select class="form-select" id="formUnitManufacture">
+                                            <option value="Đôi">Đôi</option>
+                                            <option value="Cái">Cái</option>
+                                            <option value="Cặp">Cặp</option>
+                                            <option value="Kg">Kg</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="number" min="0" name="Số lượng" id="formQuantity">
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-floating">
+                            <textarea class="form-control" placeholder="Ghi chú" id="formNote" style="height: 72px;"></textarea>
+                            <label for="formNote">Ghi chú</label>
+                        </div>
+                    </div>
+
+                </form>
+
+
+            </div>
+
+            <div class="modal-footer pt-1 pb-1">
+
+                <div class="row p-0 w-100">
+                    <div class="col-xl-6 col-sm-12 mt-1 p-0">
+                        <button type="button" title="Delete" id="btn_deleteModal" class="btn btn-danger"><i class="bi bi-trash"></i> Xóa</button>
+                    </div>
+
+                    <div class="col-xl-6 col-sm-12 mt-1 d-flex justify-content-end p-0">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="CloseModal()">Đóng</button>
+                        <button type="button" class="btn btn-primary ms-2" onclick="CreateOrUpdate()"><i class="bi bi-clipboard-check"></i> Lưu</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let table = $('#productTable').DataTable({
+            ajax: {
+                url: "@Url.Action("GetProducts", "Home")",
+                type: "GET",
+                datatype: "json"
+            },
+            // <li class="d-flex align-items-center" onclick="showModal('update-${row.id}')">
+            columns: [
+                { data: "username", width: "20%" },
+                { data: "password", width: "20%" },
+                { data: "firstname", width: "30%" },
+                { data: "lastname", width: "30%" },
+                {
+                    data: null, // Dữ liệu null để tùy chỉnh
+                    render: function (data, type, row) {
+                        return `
+                                                                                                                                    <td class="dropdown-action">
+                                                                                                                                        <div class="dropdown">
+                                                                                                                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton${row.id}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                                                                                                Tác vụ
+                                                                                                                                            </button>
+                                                                                                                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton${row.id}">
+                                                                                                                                                <li class="d-flex align-items-center" onclick="return showModal();">
+                                                                                                                                                    <div class="p-1 d-flex align-items-center" style="cursor:pointer">
+                                                                                                                                                        <i class="bi bi-journal-text me-2"></i>
+                                                                                                                                                        <span class="text-nowrap fs-6">Chỉnh sửa</span>
+                                                                                                                                                    </div>
+                                                                                                                                                </li>
+                                                                                                                                                <li><hr class="dropdown-divider"></li>
+                                                                                                                                                <li class="d-flex align-items-center" onclick="showModal('delete-${row.id}')">
+                                                                                                                                                    <div class="p-1 d-flex align-items-center" style="cursor:pointer">
+                                                                                                                                                        <i class="bi bi-trash3-fill me-2"></i>
+                                                                                                                                                        <span class="text-nowrap fs-6">Xóa</span>
+                                                                                                                                                    </div>
+                                                                                                                                                </li>
+                                                                                                                                            </ul>
+                                                                                                                                        </div>
+                                                                                                                                        <div class="modal" tabindex="-1" id="delete-${row.id}">
+                                                                                                                                            <div class="modal-dialog">
+                                                                                                                                                <div class="modal-content">
+                                                                                                                                                    <div class="modal-header">
+                                                                                                                                                        <h5 class="modal-title fw-bolder">Xóa khách hàng</h5>
+                                                                                                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                                                                                    </div>
+                                                                                                                                                    <div class="modal-body">
+                                                                                                                                                        <form method="delete"
+                                                                                                                                                            action="/Customer/Delete"
+                                                                                                                                                            autocomplete="off"
+                                                                                                                                                            onsubmit="return jQueryAjaxPost(this,'delete-${row.id}');"
+                                                                                                                                                            class="form-delete">
+                                                                                                                                                            <!-- Thêm thông tin cần thiết cho form xóa ở đây -->
+                                                                                                                                                        </form>
+                                                                                                                                                    </div>
+                                                                                                                                                </div>
+                                                                                                                                            </div>
+                                                                                                                                        </div>
+                                                                                                                                    </td>`;
+                    },
+                    width: "10%" // Đặt độ rộng cho cột hành động
+                }
+            ],
+            paging: true,
+            searching: true,
+            ordering: true,
+            responsive: true,
+            language: {
+                "sEmptyTable": "Không có dữ liệu trong bảng",
+                "sInfo": "Hiển thị từ _START_ đến _END_ của _TOTAL_ mục",
+                "sInfoEmpty": "Hiển thị 0 đến 0 của 0 mục",
+                "sInfoFiltered": "(đã lọc từ _MAX_ mục)",
+                "sLengthMenu": "Hiển thị _MENU_ mục",
+                "sLoadingRecords": "Đang tải...",
+                "sProcessing": "Đang xử lý...",
+                "sSearch": "Tìm kiếm:",
+                "sZeroRecords": "Không tìm thấy dữ liệu khớp",
+                // "oPaginate": {
+                //     "sFirst": "Đầu tiên",
+                //     "sLast": "Cuối cùng",
+                //     "sNext": "Tiếp theo",
+                //     "sPrevious": "Trước đó"
+                // },
+                "oAria": {
+                    "sSortAscending": ": Kích hoạt để sắp xếp cột theo thứ tự tăng dần",
+                    "sSortDescending": ": Kích hoạt để sắp xếp cột theo thứ tự giảm dần"
+                }
+            },
+        });
+    });
+
+    function showModal(modalId) {
+        // Hiển thị modal tương ứng
+        const modalElement = document.getElementById(modalId);
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
+    }
+
+    function jQueryAjaxPost(form, modalId) {
+        // Logic xử lý xóa với AJAX
+        // Thay thế action trong form với ID của modal nếu cần thiết
+        // Gọi AJAX để thực hiện xóa
+        // ...
+        return false; // Ngăn chặn hành động mặc định của form
+    }
+
+    function showModal() {
+        $('#staticBackdrop').modal('show');
+        if (materialId == 0) {
+            $('#btn_deleteModal').hide();
+        }
+    }
+
+    function CloseModal() {
+        materialId = 0;
+        document.getElementById('form').reset();
+        $('#importedMaterial').val("");
+        $('#staticBackdrop').modal('hide');
+    }
+
+
+    function GetById(id) {
+        $('#btn_deleteModal').show();
+        $('#staticBackdropLabel').text("Cập nhật nguyên vật liệu");
+        materialId = id;
+        let _url = "/Material/GetById";
+        $.ajax({
+            url: _url,
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                Id: id
+            },
+            contentType: 'application/json',
+            success: function (data) {
+                $('#groupIdModal').val(data.materialGroupId);
+                $('#formMaterialCode').val(data.materialCode);
+                $('#formMaterialName').val(data.materialName);
+                $('#formCustomerMaterials').val(data.customerMaterials);
+                $('#formSupplierMaterials').val(data.supplierMaterials);
+                $('#formImportPrice').val(data.importPrice);
+                $('#formExportPrice').val(data.exportPrice);
+                $('#formMinQuantity').val(data.minQuantity);
+                $('#formUnit').val(data.unit);
+                $('#formNote').val(data.note);
+                $('#formQuantity').val(data.quantity);
+                $('#importedMaterial').val(data.importedMaterial);
+                $('#formUnitManufacture').val(data.unitManufacture);
+            },
+            error: function (err) {
+                MessageError(err.responseText);
+            }
+        });
+        showModal();
+    }
+    function CreateOrUpdate() {
+        var obj = {
+            Id: materialId,
+            FinishProductTypeId: 0,
+            MaterialGroupId: parseInt($('#groupIdModal').val() ?? -1),
+            MaterialCode: $('#formMaterialCode').val() ?? "",
+            MaterialName: $('#formMaterialName').val() ?? "",
+            CustomerMaterials: $('#formCustomerMaterials').val() ?? "",
+            SupplierMaterials: $('#formSupplierMaterials').val() ?? "",
+            ImportPrice: parseFloat($('#formImportPrice').val()),
+            ExportPrice: parseFloat($('#formExportPrice').val()),
+            MinQuantity: parseInt($('#formMinQuantity').val()),
+            Unit: $('#formUnit').val(),
+            Note: $('#formNote').val(),
+            Quantity: parseInt($('#formQuantity').val()),
+            ImportedMaterial: $('#importedMaterial').val() ?? "",
+            UnitManufacture: $('#formUnitManufacture').val() ?? ""
+        };
+        if (obj.MaterialGroupId == null || obj.MaterialGroupId == undefined || obj.MaterialGroupId == -1) {
+            alert("Chọn nhóm nguyên vật liệu!");
+            return;
+        }
+        if (obj.ImportedMaterial == null || obj.ImportedMaterial.trim() == "") {
+            alert("Chọn nhóm nguyên liệu nhập gia công!");
+            return;
+        }
+        if (obj.MaterialName == null || obj.MaterialName.trim() === "") {
+            alert("Nhập dữ liệu vào trường mã nguyên vật liệu!");
+            return;
+        }
+        if (obj.MaterialName == null || obj.MaterialName.trim() === "") {
+            alert("Nhập dữ liệu vào trường Tên nguyên vật liệu!");
+            return;
+        }
+        if (obj.Unit == null || obj.Unit.trim() === "") {
+            alert("Chọn đơn vị!");
+            return;
+        }
+
+        let _url = "/Material/CreateOrUpdate";
+        $.ajax({
+            type: 'POST',
+            url: _url,
+            contentType: 'application/json;charset=utf-8',
+            data: JSON.stringify(obj),
+            success: function (result) {
+                if (!result) {
+                    alert("Mã nguyên vật liệu đã tồn tại!")
+                }
+                else {
+                    CloseModal();
+                    GetAll();
+
+                }
+            },
+            error: function (err) {
+                MessageError(err.responseText);
+            }
+        });
+
+    }
+    function DeleteById(id) {
+        if (confirm("Bạn có chắc chắn muốn thực hiện thao tác này?") == true) {
+            let _url = "/Material/Delete";
+            $.ajax({
+                type: 'GET',
+                url: _url,
+                contentType: 'application/json;charset=utf-8',
+                data: {
+                    Id: id,
+                },
+                success: function (result) {
+                    if (result) {
+                        CloseModal();
+                        pageNumber = 1;
+                        GetAll();
+                    }
+                    else alert("Nguyên vật liệu đang được sử dụng trong BOM!");
+
+                },
+                error: function (err) {
+                    MessageError(err.responseText);
+                }
+            });
+        }
+    }
+</script>
