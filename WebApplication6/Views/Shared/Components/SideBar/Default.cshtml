@@ -1,0 +1,52 @@
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+@using MesWeb.Models.ViewModel;
+@model List<CategoryViewModel>
+
+
+
+<ul class="sidebar-nav" id="sidebar-nav">
+    @foreach (var level0 in Model.Where(p => p.Level == 0))
+    {
+        <li class="nav-item">
+            <a class="nav-link collapse @level0.Class show" data-bs-target="#components-nav-@level0.Id" data-bs-toggle="collapse" href="#" aria-expanded="false">
+                <i class="bi bi-menu-button-wide"></i><span>@level0.CategoryName</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="components-nav-@level0.Id" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+                @foreach (var level1 in Model.Where(p => p.Level == 1 && p.ParentId == level0.Id))
+                {
+                    <li class="nav-heading text-uppercase">@level1.CategoryName</li>
+
+                    @foreach (var level2 in Model.Where(p => p.Level == 2 && p.ParentId == level1.Id))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link collapsed" data-bs-target="#components-nav-@level2.Id" data-bs-toggle="collapse" href="#" aria-expanded="true">
+                                <span>@level2.CategoryName</span><i class="bi bi-chevron-down ms-auto fs-6"></i>
+                            </a>
+                            <ul id="components-nav-@level2.Id" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                                @foreach (var level3 in Model.Where(p => p.Level == 3 && p.ParentId == level2.Id))
+                                {
+                                    <li>
+                                        @if (Context.Request.Path == "/" + level3.Link)
+                                        {
+                                            <a href="/@level3.Link" id="@level3.Id" class="active ">
+                                                <i class="bi bi-circle"></i><span>@level3.CategoryName</span>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a href="/@level3.Link" id="@level3.Id">
+                                                <i class="bi bi-circle"></i><span>@level3.CategoryName</span>
+                                            </a>
+                                        }
+
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    }
+
+                }
+            </ul>
+        </li>
+    }
+</ul>
