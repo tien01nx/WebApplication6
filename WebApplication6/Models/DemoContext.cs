@@ -21,6 +21,8 @@ public partial class DemoContext : DbContext
 
     public virtual DbSet<UserLogin> UserLogins { get; set; }
 
+    public virtual DbSet<YourTableName> YourTableNames { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Data Source=DESKTOP-GRR6EAN;Initial Catalog=demo;Persist Security Info=True;User ID=sa; Password=123456;Trust Server Certificate=True;");
@@ -92,6 +94,31 @@ public partial class DemoContext : DbContext
             entity.Property(e => e.Username)
                 .HasMaxLength(50)
                 .HasColumnName("username");
+        });
+
+        modelBuilder.Entity<YourTableName>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__YourTabl__3214EC07DA7FEA32");
+
+            entity.ToTable("YourTableName");
+
+            entity.Property(e => e.ApprovedBy).HasMaxLength(50);
+            entity.Property(e => e.ApprovedDate).HasColumnType("datetime");
+            entity.Property(e => e.CheckedBy).HasMaxLength(50);
+            entity.Property(e => e.CheckedDate).HasColumnType("datetime");
+            entity.Property(e => e.CreateBy).HasMaxLength(50);
+            entity.Property(e => e.CreateDate).HasColumnType("datetime");
+            entity.Property(e => e.DrawingRev).HasMaxLength(50);
+            entity.Property(e => e.IssuedBy).HasMaxLength(50);
+            entity.Property(e => e.IssuedDate).HasColumnType("datetime");
+            entity.Property(e => e.ManagementId)
+                .HasMaxLength(50)
+                .HasColumnName("ManagementID");
+            entity.Property(e => e.Model).HasMaxLength(50);
+            entity.Property(e => e.No).HasMaxLength(50);
+            entity.Property(e => e.PartName).HasMaxLength(50);
+            entity.Property(e => e.PartNo).HasMaxLength(50);
+            entity.Property(e => e.UpdateDate).HasColumnType("datetime");
         });
 
         OnModelCreatingPartial(modelBuilder);

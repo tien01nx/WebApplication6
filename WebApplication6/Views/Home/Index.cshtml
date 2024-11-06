@@ -1,4 +1,10 @@
-﻿
+﻿<form id="uploadForm" method="post">
+    <input type="file" name="file" accept=".xlsx, .xls" id="fileInput" />
+    <button type="submit">Upload</button>
+</form>
+
+<input type="text" name="lastname" id="lastname" disabled /> <!-- Disabled by default -->
+<div id="result"></div>
 <div class="card card-custom gutter-b mt-1 ">
     <div class="card-body">
 
@@ -226,47 +232,47 @@
                     data: null, // Dữ liệu null để tùy chỉnh
                     render: function (data, type, row) {
                         return `
-                                                                                                                                    <td class="dropdown-action">
-                                                                                                                                        <div class="dropdown">
-                                                                                                                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton${row.id}" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                                                                                                Tác vụ
-                                                                                                                                            </button>
-                                                                                                                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton${row.id}">
-                                                                                                                                                <li class="d-flex align-items-center" onclick="return showModal();">
-                                                                                                                                                    <div class="p-1 d-flex align-items-center" style="cursor:pointer">
-                                                                                                                                                        <i class="bi bi-journal-text me-2"></i>
-                                                                                                                                                        <span class="text-nowrap fs-6">Chỉnh sửa</span>
-                                                                                                                                                    </div>
-                                                                                                                                                </li>
-                                                                                                                                                <li><hr class="dropdown-divider"></li>
-                                                                                                                                                <li class="d-flex align-items-center" onclick="showModal('delete-${row.id}')">
-                                                                                                                                                    <div class="p-1 d-flex align-items-center" style="cursor:pointer">
-                                                                                                                                                        <i class="bi bi-trash3-fill me-2"></i>
-                                                                                                                                                        <span class="text-nowrap fs-6">Xóa</span>
-                                                                                                                                                    </div>
-                                                                                                                                                </li>
-                                                                                                                                            </ul>
-                                                                                                                                        </div>
-                                                                                                                                        <div class="modal" tabindex="-1" id="delete-${row.id}">
-                                                                                                                                            <div class="modal-dialog">
-                                                                                                                                                <div class="modal-content">
-                                                                                                                                                    <div class="modal-header">
-                                                                                                                                                        <h5 class="modal-title fw-bolder">Xóa khách hàng</h5>
-                                                                                                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                                                                                                    </div>
-                                                                                                                                                    <div class="modal-body">
-                                                                                                                                                        <form method="delete"
-                                                                                                                                                            action="/Customer/Delete"
-                                                                                                                                                            autocomplete="off"
-                                                                                                                                                            onsubmit="return jQueryAjaxPost(this,'delete-${row.id}');"
-                                                                                                                                                            class="form-delete">
-                                                                                                                                                            <!-- Thêm thông tin cần thiết cho form xóa ở đây -->
-                                                                                                                                                        </form>
-                                                                                                                                                    </div>
-                                                                                                                                                </div>
-                                                                                                                                            </div>
-                                                                                                                                        </div>
-                                                                                                                                    </td>`;
+                                                                                                                                                                                                                                                <td class="dropdown-action">
+                                                                                                                                                                                                                                                    <div class="dropdown">
+                                                                                                                                                                                                                                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton${row.id}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                                                                                                                                                                                                            Tác vụ
+                                                                                                                                                                                                                                                        </button>
+                                                                                                                                                                                                                                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton${row.id}">
+                                                                                                                                                                                                                                                            <li class="d-flex align-items-center" onclick="return showModal();">
+                                                                                                                                                                                                                                                                <div class="p-1 d-flex align-items-center" style="cursor:pointer">
+                                                                                                                                                                                                                                                                    <i class="bi bi-journal-text me-2"></i>
+                                                                                                                                                                                                                                                                    <span class="text-nowrap fs-6">Chỉnh sửa</span>
+                                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                                            </li>
+                                                                                                                                                                                                                                                            <li><hr class="dropdown-divider"></li>
+                                                                                                                                                                                                                                                            <li class="d-flex align-items-center" onclick="showModal('delete-${row.id}')">
+                                                                                                                                                                                                                                                                <div class="p-1 d-flex align-items-center" style="cursor:pointer">
+                                                                                                                                                                                                                                                                    <i class="bi bi-trash3-fill me-2"></i>
+                                                                                                                                                                                                                                                                    <span class="text-nowrap fs-6">Xóa</span>
+                                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                                            </li>
+                                                                                                                                                                                                                                                        </ul>
+                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                    <div class="modal" tabindex="-1" id="delete-${row.id}">
+                                                                                                                                                                                                                                                        <div class="modal-dialog">
+                                                                                                                                                                                                                                                            <div class="modal-content">
+                                                                                                                                                                                                                                                                <div class="modal-header">
+                                                                                                                                                                                                                                                                    <h5 class="modal-title fw-bolder">Xóa khách hàng</h5>
+                                                                                                                                                                                                                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                                                <div class="modal-body">
+                                                                                                                                                                                                                                                                    <form method="delete"
+                                                                                                                                                                                                                                                                        action="/Customer/Delete"
+                                                                                                                                                                                                                                                                        autocomplete="off"
+                                                                                                                                                                                                                                                                        onsubmit="return jQueryAjaxPost(this,'delete-${row.id}');"
+                                                                                                                                                                                                                                                                        class="form-delete">
+                                                                                                                                                                                                                                                                        <!-- Thêm thông tin cần thiết cho form xóa ở đây -->
+                                                                                                                                                                                                                                                                    </form>
+                                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                </td>`;
                     },
                     width: "10%" // Đặt độ rộng cho cột hành động
                 }
@@ -449,4 +455,38 @@
             });
         }
     }
+
+
+
+    $(document).ready(function () {
+        $("#uploadForm").submit(function (e) {
+            e.preventDefault();  // Ngừng hành động mặc định của form
+
+            var formData = new FormData();
+            var fileInput = $("#fileInput")[0];  // Lấy input file
+            if (fileInput.files.length > 0) {
+                formData.append("file", fileInput.files[0]); // Thêm file vào FormData
+            }
+
+            $.ajax({
+                url: '@Url.Action("UploadExcel", "Home")',  // Đường dẫn đến phương thức controller
+                type: 'POST',
+                data: formData,
+                contentType: false, // Không gửi content-type
+                processData: false, // Không xử lý dữ liệu, giữ nguyên
+                success: function (response) {
+                    // Xử lý kết quả trả về từ server
+                    console.log(response); // Thông tin trả về từ server
+                    $("#result").html("<p>File uploaded successfully!</p>");
+                    $("#lastname").prop("disabled", false);
+                    $("#lastname").val(response.data.fileName);
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error uploading file:", error);
+                    $("#result").html("<p>Error uploading file.</p>");
+                }
+            });
+        });
+    });
+
 </script>
