@@ -139,6 +139,30 @@ namespace WebApplication6.Controllers
             return Json(new { success = true, message = "File uploaded successfully!", data = demo });
         }
 
+
+        public async Task<IActionResult> DownloadFile(string uniqueFilename, string originalFilename = "application_form.xlsx")
+        {
+            string wwwRootPath = _webHostEnvironment.WebRootPath;
+            string path = "uploads\\files\\username\\852265\\20241107";
+            string filePath = Path.Combine(wwwRootPath, path, DateTime.Now.ToString("yyyyMMdd"), uniqueFilename);
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound();
+            }
+
+            // Trả về file với tên gốc khi tải về
+            var memory = new MemoryStream();
+            using (var stream = new FileStream(filePath, FileMode.Open))
+            {
+                await stream.CopyToAsync(memory);
+            }
+            memory.Position = 0;
+            return File(memory, "application/octet-stream", originalFilename);
+        }
+
+
+
         public ExcelData ReadAndWriteExcel(string filePath, string userPath, string fileName)
         {
             ExcelData result = new ExcelData();
