@@ -22,6 +22,14 @@ namespace WebApplication6.Controllers
             var item = _context.Roles.ToList();
             return Json(item);
         }
+
+        public JsonResult GetById(int id)
+        {
+            var item = _context.Roles.Where(u => u.Id == id).ToList();
+            return Json(item);
+        }
+
+
         public IActionResult Index()
         {
             return View();
