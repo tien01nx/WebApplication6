@@ -9,6 +9,7 @@ namespace WebApplication6.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly DemoContext _context = new DemoContext();
         public HomeController(ILogger<HomeController> logger, IWebHostEnvironment webHostEnvironment)
         {
             _logger = logger;
@@ -16,6 +17,11 @@ namespace WebApplication6.Controllers
         }
 
 
+        public JsonResult Test()
+        {
+            var item = _context.Roles.ToList();
+            return Json(item);
+        }
         public IActionResult Index()
         {
             return View();
@@ -139,7 +145,6 @@ namespace WebApplication6.Controllers
             return Json(new { success = true, message = "File uploaded successfully!", data = demo });
         }
 
-
         public async Task<IActionResult> DownloadFile(string uniqueFilename, string originalFilename = "application_form.xlsx")
         {
             string wwwRootPath = _webHostEnvironment.WebRootPath;
@@ -160,8 +165,6 @@ namespace WebApplication6.Controllers
             memory.Position = 0;
             return File(memory, "application/octet-stream", originalFilename);
         }
-
-
 
         public ExcelData ReadAndWriteExcel(string filePath, string userPath, string fileName)
         {
