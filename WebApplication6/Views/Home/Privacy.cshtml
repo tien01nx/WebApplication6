@@ -1,51 +1,300 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>DataTables with AJAX</title>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-</head>
-<body>
-    <input type="text" id="userId" placeholder="Enter ID">
-    <button id="loadData">Load Data</button>
+﻿
+<div class="container mt-4">
+    <h2>Fixed Multiple Columns Table Example</h2>
+    <button id="sendDataBtn" class="btn btn-primary mb-3">Send Selected Data</button>
+    <div class="table-fixed">
+        <table class="table table-bordered table-danger">
+            <thead>
+                <tr>
+                    <!-- 20 Cột -->
+                    <th><input type="checkbox" id="selectAll"></th>
+                    <th>STT 1</th>
+                    <th>Số quản lý 2</th>
+                    <th>Tình trạng 3</th>
+                    <th>Đời máy 4</th>
+                    <th>Mã số sản phẩm 5</th>
+                    <th>Tên sản phẩm 6</th>
+                    <th>Số bản vẽ 7</th>
+                    <th>Số Version 8</th>
+                    <th>nội dung 9</th>
+                    <th>Ngày thay đổi 10</th>
+                    <th>Người lập 11</th>
+                    <th>Người check 12</th>
+                    <th>Ngày chek 13</th>
+                    <th>Người phê duyệt 14</th>
+                    <th>Ngày phê duyệt 14</th>
+                    <th>Ngày Update 15</th>
+                    <th>người update 16</th>
+                    <th>Filke 17</th>
+                    <th>Column 18</th>
+                    <th>Column 19</th>
+                    <th>Column 20</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Thêm nhiều dòng dữ liệu để thấy hiệu ứng cuộn -->
+                <tr>
+                    <td><input type="checkbox" class="rowCheckbox" data-id="2"></td>
+                    <td>Row 1 - Col 1</td>
+                    <td>Row 1 - Col 2</td>
+                    <td>Row 1 - Col 3</td>
+                    <td>Row 1 - Col 4</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Row 1 - Col 19</td>
+                    <td>Row 1 - Col 20</td>
+                    <td>Row 1 - Col 20</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" class="rowCheckbox" data-id="3"></td>
+                    <td>Row 2 - Col 1</td>
+                    <td>Row 2 - Col 2</td>
+                    <td>Row 2 - Col 3</td>
+                    <td>Row 2 - Col 4</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Row 2 - Col 19</td>
+                    <td>Row 1 - Col 20</td>
+                    <td>Row 2 - Col 20</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" class="rowCheckbox" data-id="4"></td>
 
-    <table id="example" class="display" style="width:100%">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Age</th>
-                <th>Email</th>
-            </tr>
-        </thead>
-    </table>
+                    <td>Row 2 - Col 1</td>
+                    <td>Row 2 - Col 2</td>
+                    <td>Row 2 - Col 3</td>
+                    <td>Row 2 - Col 4</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Row 2 - Col 19</td>
+                    <td>Row 1 - Col 20</td>
+                    <td>Row 2 - Col 20</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" class="rowCheckbox" data-id="5"></td>
 
-    <script>
-        $(document).ready(function () {
-            let table;
+                    <td>Row 2 - Col 1</td>
+                    <td>Row 2 - Col 2</td>
+                    <td>Row 2 - Col 3</td>
+                    <td>Row 2 - Col 4</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Row 2 - Col 19</td>
+                    <td>Row 1 - Col 20</td>
+                    <td>Row 2 - Col 20</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" class="rowCheckbox" data-id="7"></td>
 
-            $('#loadData').on('click', function () {
-                let id = $('#userId').val();
+                    <td>Row 2 - Col 1</td>
+                    <td>Row 2 - Col 2</td>
+                    <td>Row 2 - Col 3</td>
+                    <td>Row 2 - Col 4</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Row 1 - Col 20</td>
+                    <td>Row 2 - Col 19</td>
+                    <td>Row 2 - Col 20</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" class="rowCheckbox" data-id="9"></td>
 
-                if (table) {
-                    table.ajax.url(`/Home/GetById?id=${id}`).load();
-                } else {
-                    table = $('#example').DataTable({
-                        "ajax": {
-                            "url": `/Home/GetById?id=${id}`,
-                            "dataSrc": ""
-                        },
-                        "columns": [
-                            { "data": "id" },
-                            { "data": "role1" },
-                            { "data": "createby" },
-                            { "data": "createat" }
-                        ]
-                    });
-                }
-            });
+                    <td>Row 2 - Col 1</td>
+                    <td>Row 2 - Col 2</td>
+                    <td>Row 2 - Col 3</td>
+                    <td>Row 2 - Col 4</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Row 2 - Col 19</td>
+                    <td>Row 1 - Col 20</td>
+                    <td>Row 2 - Col 20</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" class="rowCheckbox" data-id="11"></td>
+
+                    <td>Row 2 - Col 1</td>
+                    <td>Row 2 - Col 2</td>
+                    <td>Row 1 - Col 20</td>
+                    <td>Row 2 - Col 3</td>
+                    <td>Row 2 - Col 4</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Row 2 - Col 19</td>
+                    <td>Row 2 - Col 20</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" class="rowCheckbox" data-id="1"></td>
+
+                    <td>Row 2 - Col 1</td>
+                    <td>Row 2 - Col 2</td>
+                    <td>Row 2 - Col 3</td>
+                    <td>Row 2 - Col 4</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Row 2 - Col 19</td>
+                    <td>Row 1 - Col 20</td>
+                    <td>Row 2 - Col 20</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" class="rowCheckbox" data-id="1"></td>
+
+                    <td>Row 2 - Col 1</td>
+                    <td>Row 2 - Col 2</td>
+                    <td>Row 2 - Col 3</td>
+                    <td>Row 2 - Col 4</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Data</td>
+                    <td>Row 1 - Col 20</td>
+                    <td>Row 2 - Col 19</td>
+                    <td>Row 2 - Col 20</td>
+                </tr>
+                <!-- Thêm nhiều dòng nếu cần -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Lựa chọn hoặc bỏ chọn tất cả checkbox
+    document.getElementById('selectAll').addEventListener('change', function () {
+        let checkboxes = document.querySelectorAll('.rowCheckbox');
+        checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+    });
+
+    // Gửi dữ liệu đã chọn qua AJAX khi nhấn nút "Send Selected Data"
+    document.getElementById('sendDataBtn').addEventListener('click', function () {
+        let selectedIds = [];
+        document.querySelectorAll('.rowCheckbox:checked').forEach(checkbox => {
+            selectedIds.push(checkbox.getAttribute('data-id'));
         });
-    </script>
-</body>
-</html>
+
+        // Kiểm tra nếu có dữ liệu nào được chọn
+        if (selectedIds.length === 0) {
+            alert('Please select at least one row.');
+            return;
+        }
+
+        // Gửi dữ liệu lên server qua AJAX
+        $.ajax({
+            url: '/your-server-endpoint', // Thay đổi URL tới endpoint của bạn
+            method: 'POST',
+            data: { selectedIds: selectedIds },
+            success: function (response) {
+                alert('Data sent successfully!');
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+                alert('Failed to send data.');
+            }
+        });
+    });
+</script>
