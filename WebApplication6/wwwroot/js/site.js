@@ -53,6 +53,32 @@
     if (select('.search-bar-toggle')) {
         on('click', '.search-bar-toggle', function (e) {
             select('.search-bar').classList.toggle('search-bar-show')
-        })
+                })
     }
 })();
+
+function onClickCheckbox(event) {
+    var element = $(event.target);
+    var parentElement = $(event.target).parent();
+    var id = parseInt($(element).val());
+    var index = paymentOrderIDs.indexOf(id);
+    var countItem = $('input[name="selecteditem"]').length;
+
+    if (element.is(':checked')) {
+        if (index <= 0) {
+            paymentOrderIDs.push(id);
+        }
+        //$(parentElement).parent().addClass('bg-whitesmoke');
+
+        if (countItem == paymentOrderIDs.length) {
+            $('#chk_checkall_paymentorder').prop('checked', true);
+        }
+    } else {
+        if (index > -1) {
+            paymentOrderIDs.splice(index, 1);
+        }
+        //$(parentElement).parent().removeClass('bg-whitesmoke');
+
+        $('#chk_checkall_paymentorder').prop('checked', false);
+    }
+}
