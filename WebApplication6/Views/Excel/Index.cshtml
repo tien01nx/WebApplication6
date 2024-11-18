@@ -1,0 +1,91 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Excel</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Upload Excel File</h1>
+
+    <!-- Form Upload -->
+    <form id="uploadForm">
+        <input type="file" id="fileInput" name="file" accept=".xlsx, .xls" required>
+        <button type="submit">Upload</button>
+    </form>
+
+    <div id="previewSection">
+        <h2>Preview Data</h2>
+        <table border="1" id="previewTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button id="confirmSave">Confirm Save</button>
+    </div>
+
+    <script>
+        let sessionId = null;
+        // Handle file upload
+        $('#uploadForm').on('submit', function (e) {
+            e.preventDefault();
+
+            let formData = new FormData();
+            let fileInput = $('#fileInput')[0].files[0];
+            if (!fileInput) {
+                alert('Please select a file!');
+                return;
+            }
+            formData.append('file', fileInput);
+
+            $.ajax({
+                url: '/Excel/UploadExcel', // Replace with your actual controller endpoint
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    sessionId = response.sessionId; // Lưu sessionId
+                    // const previewData = response.previewData;
+                },
+                error: function () {
+                    alert('Error uploading file. Please try again.');
+                }
+            });
+        });
+
+        // Handle confirm save
+        $('#confirmSave').on('click', function () {
+            if (!sessionId) {
+                alert('No sessionId found. Please upload a file first.');
+                return;
+            }
+
+            $.ajax({
+                url: '/Excel/ConfirmSave', // Endpoint trong controller
+                type: 'POST',
+                data: { sessionId: sessionId }, // Gửi dưới dạng key-value
+                success: function (response) {
+                    alert(response.message); // Xử lý thông báo thành công
+                    $('#previewSection').hide();
+                    $('#previewTable tbody').empty();
+                    sessionId = null;
+                },
+                error: function () {
+                    alert('Error saving data. Please try again.');
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>

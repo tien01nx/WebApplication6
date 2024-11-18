@@ -3,6 +3,8 @@
     <button type="submit">Upload</button>
 </form>
 
+@await Component.InvokeAsync("PermissionButton", new { formName = "Default" })
+
 <input type="text" name="lastname" id="lastname" disabled /> <!-- Disabled by default -->
 <div id="result"></div>
 <div class="card card-custom gutter-b mt-1 ">
