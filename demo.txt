@@ -1,0 +1,154 @@
+using ClassLibrary1;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using NLog;
+using NLog.Extensions.Logging;
+using Quartz.Impl;
+using Quartz;
+using WebApplication3.Data;
+using WebApplication3.Models;
+
+namespace WebApplication3.Data
+{
+    public class WebApplication3Context : DbContext
+    {
+        private static readonly LoggerFactory _loggerFactory = new LoggerFactory(new[] {
+        new NLogLoggerProvider()
+    });
+        public WebApplication3Context()
+        {
+        }
+
+        public WebApplication3Context(DbContextOptions<WebApplication3Context> options)
+            : base(options)
+        {
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                // Cấu hình kết nối mặc định
+                optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=demo1;User ID=sa;" +
+                    "Password=123456;Trust Server Certificate=True")
+                     .UseLoggerFactory(_loggerFactory) // Ghi log
+            .EnableSensitiveDataLogging();   // Hiển thị dữ liệu trong log (nếu cần)
+            }
+        }
+
+        public DbSet<OverTime> OverTime { get; set; }
+    }
+}
+
+
+using Quartz;
+using WebApplication3.Data;
+
+namespace ClassLibrary1
+{
+    public class Class1 : IJob
+    {
+        private readonly WebApplication3Context _db = new WebApplication3Context();
+
+        public Task Execute(IJobExecutionContext context)
+        {
+            var demo = _db.OverTime.ToList();
+
+            // hiện data dưới dạng consolog
+            foreach (var item in demo)
+            {
+                System.Console.WriteLine(item.Id);
+            }
+            return Task.CompletedTask;
+        }
+    }
+}
+
+
+
+
+using NLog;
+using Quartz;
+using System;
+using System.Threading.Tasks;
+
+namespace ClassLibrary1
+{
+    public class MyJob : IJob
+    {
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        public Task Execute(IJobExecutionContext context)
+        {
+            // Logic công việc của bạn ở đây
+            Console.WriteLine($"Job executed at {DateTime.Now}");
+            _logger.Info($"Job executed at {DateTime.Now}");
+            return Task.CompletedTask;
+        }
+    }
+}
+
+
+using Quartz;
+using Quartz.Impl;
+using System;
+using System.Threading.Tasks;
+
+namespace ClassLibrary1
+{
+    public class SchedulerSetup
+    {
+        public static async Task StartScheduler()
+        {
+            // Tạo scheduler
+            var schedulerFactory = new StdSchedulerFactory();
+            var scheduler = await schedulerFactory.GetScheduler();
+
+            await scheduler.Start();
+
+            // Tạo Job
+
+            // Tạo Job
+            var job = JobBuilder.Create<MyJob>()
+                                .WithIdentity("myJob1", "group1")
+                                .Build();
+
+            var job2 = JobBuilder.Create<Class1>()
+                                .WithIdentity("myJob2", "group2")
+                                .Build();
+
+            //// Cron expression để chạy vào 8h sáng và 17h chiều mỗi ngày
+            //var trigger = TriggerBuilder.Create()
+            //                            .WithIdentity("myTrigger", "group1")
+            //                            .WithCronSchedule("0 0 8,17 * * ?") // Chạy vào 8h sáng và 17h chiều mỗi ngày
+            //                            .Build();
+
+            var trigger = TriggerBuilder.Create()
+                            .WithIdentity("myTrigger1", "group1")
+                            .StartNow() // Bắt đầu ngay lập tức
+                            .WithSimpleSchedule(x => x
+                                .WithIntervalInSeconds(2) // Mỗi 10 giây
+                                .RepeatForever())          // Lặp lại mãi mãi
+                            .Build();
+
+            var trigger2 = TriggerBuilder.Create()
+                            .WithIdentity("myTrigger2", "group2")
+                            .WithCronSchedule("0 20 19 * * ?") // Chạy vào 19:08 và 19:10 mỗi ngày
+                            .Build();
+
+
+
+            // Đăng ký job và trigger vào scheduler
+            await scheduler.ScheduleJob(job, trigger);
+            await scheduler.ScheduleJob(job2, trigger2);
+        }
+    }
+}
+
+builder.Services.AddDbContext<WebApplication3Context>(option => option.UseSqlServer
+("Data Source=.;Initial Catalog=demo1;User ID=sa;Password=123456;Trust Server Certificate=True"));
+// Thêm NLog
+builder.Logging.ClearProviders();
+builder.Host.UseNLog();
+
+
+SchedulerSetup.StartScheduler().GetAwaiter().GetResult();
